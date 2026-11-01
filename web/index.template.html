@@ -1,0 +1,130 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="color-scheme" content="light dark">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self'; img-src 'self' data: https://tile.openstreetmap.org https://*.tile.openstreetmap.org; connect-src 'self'; base-uri 'none'; form-action 'none'">
+  <meta name="referrer" content="strict-origin-when-cross-origin">
+  <title>{{TITLE}}</title>
+  <link rel="stylesheet" href="vendor/leaflet.css">
+  <link rel="stylesheet" href="vendor/MarkerCluster.css">
+  <link rel="stylesheet" href="vendor/MarkerCluster.Default.css">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <aside id="panel" class="panel" aria-label="Filtres et liste des activités">
+    <div class="panel-head">
+      <button id="sheetToggle" class="sheet-toggle" type="button" aria-expanded="true" aria-controls="panelBody">
+        <span class="grabber" aria-hidden="true"></span>
+        <span id="summary" class="summary">Aucune activité chargée</span>
+      </button>
+      <div class="head-actions">
+        <button id="btnImport" type="button" class="btn small">Importer</button>
+        <button id="btnHelp" type="button" class="btn small ghost">Aide</button>
+      </div>
+    </div>
+
+    <div id="panelBody" class="panel-body">
+      <p id="demoBanner" class="notice" hidden></p>
+      <p id="unitsNote" class="muted small" hidden></p>
+
+      <section aria-labelledby="hPeriod">
+        <h2 id="hPeriod">Période</h2>
+        <div class="chips" id="presets">
+          <button type="button" class="chip" data-preset="30d">30 jours</button>
+          <button type="button" class="chip" data-preset="3m">3 mois</button>
+          <button type="button" class="chip" data-preset="12m">12 mois</button>
+          <button type="button" class="chip" data-preset="year">Cette année</button>
+          <button type="button" class="chip" data-preset="all">Tout</button>
+        </div>
+        <div class="dates">
+          <label>Du <input type="date" id="dateFrom"></label>
+          <label>au <input type="date" id="dateTo"></label>
+        </div>
+      </section>
+
+      <section aria-labelledby="hTypes">
+        <h2 id="hTypes">Types d'activité</h2>
+        <p class="muted small">Touchez un type pour n'afficher que celui-ci, puis d'autres pour les ajouter.</p>
+        <div class="chips" id="typeChips"></div>
+        <button type="button" id="btnAllTypes" class="link-btn">Tout afficher</button>
+      </section>
+
+      <section>
+        <label class="check">
+          <input type="checkbox" id="directOpen">
+          <span id="directOpenText"></span>
+        </label>
+      </section>
+
+      <section aria-labelledby="hList">
+        <div class="sec-head">
+          <h2 id="hList">Activités</h2>
+          <button type="button" id="btnSelMode" class="btn small ghost" aria-pressed="false">Sélectionner</button>
+        </div>
+        <ul id="list" class="list"></ul>
+        <button type="button" id="btnMore" class="btn small ghost" hidden>Afficher plus</button>
+      </section>
+    </div>
+
+    <div id="selBar" class="selbar" hidden>
+      <p id="selInfo" class="selinfo" aria-live="polite"></p>
+      <p id="selMsg" class="selmsg" role="status"></p>
+      <div class="selbtns">
+        <button type="button" id="btnSum" class="btn small primary" disabled>Additionner</button>
+        <button type="button" id="btnSelAll" class="btn small">Tout sélectionner</button>
+        <button type="button" id="btnSelClear" class="btn small ghost">Vider</button>
+        <button type="button" id="btnSelQuit" class="btn small ghost">Quitter</button>
+      </div>
+    </div>
+  </aside>
+
+  <div id="map" role="application" aria-label="Carte des activités"></div>
+
+  <div id="welcome" class="overlay" role="dialog" aria-modal="true" aria-labelledby="welcomeTitle">
+    <div class="card">
+      <h1 id="welcomeTitle"></h1>
+      <p id="welcomeLead" class="lead"></p>
+
+      <div id="privacyBox" class="privacy">
+        <p id="privacyNote" class="flush"><strong id="privacyLead"></strong><span id="privacyText"></span></p>
+      </div>
+
+      <div id="dropzone" class="dropzone">
+        <label for="fileInput" id="importLabel" class="btn primary big"></label>
+        <input id="fileInput" class="sr-only" type="file" multiple>
+        <p id="dropHint" class="muted small"></p>
+        <p id="busy" class="muted" hidden>Lecture en cours…</p>
+        <ul id="errors" class="errors" role="alert"></ul>
+      </div>
+
+      <h2 id="helpTitle"></h2>
+      <ol id="helpSteps" class="steps"></ol>
+      <p id="helpNote" class="muted small"></p>
+
+      <div class="actions">
+        <button type="button" id="btnDemo" class="btn">Essayer avec des données fictives</button>
+        <button type="button" id="btnClose" class="btn ghost" hidden>Fermer</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="sumDialog" class="overlay" role="dialog" aria-modal="true" aria-labelledby="sumTitle" hidden>
+    <div class="card">
+      <h1 id="sumTitle">Total</h1>
+      <div id="sumBody"></div>
+      <div class="actions">
+        <button type="button" id="btnSumClose" class="btn primary">Fermer</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="vendor/leaflet.js"></script>
+  <script src="vendor/leaflet.markercluster.js"></script>
+  <script src="zip.js"></script>
+  <script src="aggregate.js"></script>
+{{SOURCE_SCRIPTS}}
+  <script src="app.js"></script>
+</body>
+</html>
